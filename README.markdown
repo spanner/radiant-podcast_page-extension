@@ -28,15 +28,19 @@ Should be straightforward:
 
 The migration will add a 'podcast' layout and an 'itunes' thumbnail size, unless you already have them. There are no database changes.
 
-## Configuraiton
+## Configuration
 
 There are no settings for the podcast extension itself but if multi_site is not installed we need a `site.url`. You may also want to look at `assets.max_asset_size`.
 
 ## Assets podcast
 
-To create a standalone podcast, all you need is a page with a bunch of audio files attached to it. You can order them, give them captions and upload new ones in the usual way: the podcast will be updated.
+	<r:podcast from="assets" />
+	
+To create a standalone podcast, all you need is a page with a bunch of audio and video files attached to it. You can order the assets, give them captions and upload new ones in the usual way: the podcast will be updated. The first image asset will be used as cover art.
 
 ## Pages podcast
+
+	<r:podcast from="children" />
 
 Here we scan all the child pages of a given root page looking for images and audio files. The sequence is determined by page-publication order (unless you specify otherwise) and we draw on the pages for captioning and metadata.
 
