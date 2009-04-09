@@ -96,6 +96,9 @@ module PodcastTags
         m.channel.subtitle = tag.attr['subtitle']
         m.channel.link = tag.attr['link']
         m.channel.description = tag.attr['description']
+        m.channel.copyright = tag.attr['copyright']
+        m.channel.language = tag.attr['language']
+
         m.channel.itunes_summary = tag.attr['description']
         m.channel.itunes_image = tag.attr['image']
 
@@ -112,8 +115,9 @@ module PodcastTags
         end
         m.channel.itunes_categories << cat if cat
         
-        m.items.do_sort = true
+        latest_episode_date = nil
         tag.locals.episodes.each do |ep|
+          latest_episode_date = ep[:date] unless latest_episode_date && latest_episode_date >= ep[:date]
           item = m.items.new_item
           item.title = ep[:title]
           item.description = ep[:description]
@@ -131,6 +135,9 @@ module PodcastTags
           item.itunes_explicit = tag.attr[:explicit] || 'No'
           item.itunes_author = tag.attr['author']
         end
+        
+        m.items.do_sort = true
+        m.channel.lastBuildDate = latest_episode_date
       end
       feed.to_s
     end
