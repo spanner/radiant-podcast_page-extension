@@ -43,7 +43,6 @@ module PodcastTags
     }
     defaults.each {|k,v| tag.attr[k] ||= v}
     
-    tag.locals.episodes = []
     if tag.double?
       tag.attr['description'] ||= tag.expand
     elsif page.part(:description)
@@ -55,35 +54,40 @@ module PodcastTags
       tag.attr['image'] = base_url + i.thumbnail(:itunes)
     end
     
+    tag.locals.episodes = []
+    
     if tag.attr['from'] == 'children'
       tag.attr['link'] ||= page.url     # normally we are referring to another html page with children here by way of an r:find tag
       tag.locals.page.children.each do |child|
-        if a = child.assets.audios.first
-          description = child.part(:description) ? child.render_part( :description ) : child.render_part( :body )
-          tag.locals.episodes.push({
-            :title => child.title,
-            :subtitle => a.caption,
-            :description => description, 
-            :link => base_url + a.asset.url, 
-            :file_size => a.asset_file_size, 
-            :file_type => a.asset_content_type, 
-            :date => child.created_at
-          })
+        description = child.part(:description) ? child.render_part( :description ) : child.render_part( :body )
+        child.assets.each do |a|
+          if a.audio? or a.movie?
+            tag.locals.episodes.push({
+              :title => child.title,
+              :subtitle => a.caption,
+              :description => description || a.caption, 
+              :link => base_url + a.asset.url, 
+              :file_size => a.asset_file_size, 
+              :file_type => a.asset_content_type, 
+              :date => child.published_at
+            })
+          end
         end
       end
     else
-      tag.attr['link'] ||= '/'          # fixme
-      tag.locals.episodes = tag.locals.page.assets.audios.collect { |a| 
-        {
-          :title => a.title, 
-          :subtitle => a.caption,
-          :date => a.created_at, 
-          :file_size => a.asset_file_size, 
-          :file_type => a.asset_content_type, 
-          :link => base_url + a.asset.url, 
-          :description => a.caption
-        } 
-      }
+      tag.locals.page.assets.each do |a| 
+        if a.audio? || a.movie?
+          tag.locals.episodes.push({
+            :title => a.title, 
+            :subtitle => a.caption,
+            :date => a.created_at, 
+            :file_size => a.asset_file_size, 
+            :file_type => a.asset_content_type, 
+            :link => base_url + a.asset.url, 
+            :description => a.caption
+          })
+        end
+      end
     end
     render_feed(tag)
   end

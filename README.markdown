@@ -2,7 +2,7 @@
 
 This is a simple thing that adds a few radius tags and makes it very simple to serve podcast feeds.
 
-It offers two ways to create a podcast: from the assets attached to a page, or from whatever audio it can find in a collection of pages (ie your blog, probably). The resulting feeds are itunes-compatible.
+It offers two ways to create a podcast: from the audio and video assets attached to a page, or from whatever audio and video it can find in a collection of pages (ie your blog, probably). The resulting feeds are itunes-compatible.
 
 I might add a 'podcast' page type at some point to simplify away what little setup remains.
 
@@ -12,12 +12,12 @@ New but simple: should just work. No tests yet.
 
 ## Requirements
 
-* [Paperclipped](https://github.com/kbingman/paperclipped/tree), to attach audio files and images to the page.
+* [Paperclipped](https://github.com/kbingman/paperclipped/tree), to attach media files and images to the page.
 * [Ruby RSS library](http://www.cozmixng.org/~rwiki/?cmd=view;name=RSS+Parser) 0.1.8 or later to get the itunes tags. For most people this will probably mean updating the core library. See [this blog entry](http://www.subelsky.com/2007/08/roll-your-own-podcast-feed-with-rails.html) for details (and a comment lower down from the author of the Parser that was very useful).
 
 If anyone knows a better way to get the latest RSS library I'd love to hear it.
 
-Works fine with multisite. If it's installed, we derive link urls from `Page.current_site`. If not, we need a `site.url` in Radiant::Config.
+This works fine with multi_site. If it's installed, we derive link urls from `Page.current_site`. If not, we need a `site.url` in Radiant::Config.
 
 ## Installation
 
@@ -27,6 +27,10 @@ Should be straightforward:
 	rake radiant:extensions:podcast:migrate
 
 The migration will add a 'podcast' layout and an 'itunes' thumbnail size, unless you already have them. There are no database changes.
+
+## Configuraiton
+
+There are no settings for the podcast extension itself but if multi_site is not installed we need a `site.url`. You may also want to look at `assets.max_asset_size`.
 
 ## Assets podcast
 
@@ -39,6 +43,10 @@ Here we scan all the child pages of a given root page looking for images and aud
 ## Images
 
 Upload an image to the podcast page and it will appear as the cover artwork. I'm looking for the right way to do the same for individual tracks within the podcast. The migrations for this extension will add an `itunes` thumbnail size to your paperclipped configuration. It's supposed to be square and larger than 600x600 so I've been using 1024x1024#.
+
+## Audio and video
+
+On the server side we don't care about encodings: it's all just files with mime types and as long as we think it's audio or video, we'll pass it through without any checking. Your readers will need to be able to see or hear it, though. See the [Apple podcast documentation](http://www.apple.com/itunes/whatson/podcasts/specs.html) for some tips.
 
 ## Metadata
 
