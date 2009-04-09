@@ -6,12 +6,18 @@ It offers two ways to create a podcast: from the assets attached to a page, or f
 
 I might add a 'podcast' page type at some point to simplify away what little setup remains.
 
+## Status
+
+New but simple: should just work. No tests yet.
+
 ## Requirements
 
 * [Paperclipped](https://github.com/kbingman/paperclipped/tree), to attach audio files and images to the page.
 * [Ruby RSS library](http://www.cozmixng.org/~rwiki/?cmd=view;name=RSS+Parser) 0.1.8 or later to get the itunes tags. For most people this will probably mean updating the core library. See [this blog entry](http://www.subelsky.com/2007/08/roll-your-own-podcast-feed-with-rails.html) for details (and a comment lower down from the author of the Parser that was very useful).
 
 If anyone knows a better way to get the latest RSS library I'd love to hear it.
+
+Works fine with multisite. If it's installed, we derive link urls from `Page.current_site`. If not, we need a `site.url` in Radiant::Config.
 
 ## Installation
 
@@ -40,7 +46,7 @@ Itunes indexes the title, author, summary and keywords of the feed. It doesn't i
 
 * the 'title' of the feed will be the title of the page
 * the 'author' of the feed will be the full name of the author of the page
-* the 'description' and 'itunes_summary' of the feed will be taken from the enclosed text if any, or from a 'description' page part.
+* the 'description' and 'itunes_summary' of the feed will be taken from the enclosed text if any, else from a 'description' page part.
 * the 'keywords' of the feed will be the keywords of the page it's on
 
 You can override any of these with parameters to the `r:podcast` tag. Other options you can also pass in:
@@ -58,13 +64,13 @@ A 'podcast' layout is created for you when you run `rake radiant:extensions:podc
 
 	<r:podcast />
 
-And then attach some audio files. or 
+And then attach some audio files. Job is done. Or:
 
 	<r:podcast from="children" />
 	
 and then give it some children and give those some audio files. That's it, really. You can also:
 	
-* Give each page a description part, and that text will go into the description of your feed (and the itunes summary) and tracks. 
+* Give each page a description part, and that text will go into the description of your feed (and the itunes summary) and tracks.
 * Attach an image asset to the podcast page, and that will become the cover artwork.
 
 If you want to turn an existing blog or other set of pages into a podcast, this should be all you need:
