@@ -12,11 +12,15 @@ module PodcastTags
     
     Or perhaps some of:
     
-    <pre><code><r:podcast title="" author="" summary="" keywords="" link="" /></code></pre>
+    <pre><code><r:podcast [title=""] [author=""] [keywords="comma,separated"] [link=""] [category="slash/filed"] /></code></pre>
     
-    To add to the podcast, just attach an audio asset to the page. To change the sequence, reorder the assets. To add a fuller description, create a 'description' page part.
+    To add to the podcast, just attach an audio asset to the page. To change the sequence, reorder the assets. To add a fuller description, create a 'description' page part or expand the tag:
+    
+    <pre><code><r:podcast>Songs about hopping</r:podcast></code></pre>
 
-    (or just use the 'podcast' layout: in that case the feed summary will come from the main page content).
+    To combine lots of pages - a whole blog, for example - into one feed, do this:
+    
+    <pre><code><r:find url="/blog"><r:podcast title="blogmusic" from="children" /></r:find></code></pre>
     
   }
   tag 'podcast' do |tag|
@@ -37,7 +41,8 @@ module PodcastTags
       'explicit' => false,
       'link' => base_url
     }
-    tag.attr.merge!(defaults)
+    defaults.each {|k,v| tag.attr[k] ||= v}
+    
     tag.locals.episodes = []
     if tag.double?
       tag.attr['description'] ||= tag.expand
@@ -62,7 +67,7 @@ module PodcastTags
             :link => base_url + a.asset.url, 
             :file_size => a.asset_file_size, 
             :file_type => a.asset_content_type, 
-            :date => child.created_at, 
+            :date => child.created_at
           })
         end
       end
