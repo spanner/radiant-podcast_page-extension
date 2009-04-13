@@ -13,6 +13,7 @@ class PodcastExtension < Radiant::Extension
   # end
   
   def activate
+    PodcastPage
     Page.send :include, PodcastTags
   end
   

@@ -4,7 +4,9 @@ This is a simple thing that adds a few radius tags and makes it very simple to s
 
 It offers two ways to create a podcast: from the audio and video assets attached to a page, or from whatever audio and video it can find in a collection of pages (ie your blog, probably). The resulting feeds are itunes-compatible.
 
-I might add a 'podcast' page type at some point to simplify away what little setup remains.
+The extension also adds a 'podcast' page type, which forces the right layout and labels your page nicely in the tree, but doesn't do much else. You can use the podcast tags in any page.
+
+If you install the [reader extension](https://github.com/spanner/reader/tree) then the podcasts can be subject to access control like any other page.
 
 ## Status
 
