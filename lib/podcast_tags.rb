@@ -25,7 +25,7 @@ module PodcastTags
   }
   tag 'podcast' do |tag|
     raise TagError, "can't have a podcast without a page" unless page = tag.locals.page
-    base_url = "http://" + (Page.respond_to?(:current_site) ? Page.current_site.base_domain : Radiant::Config['site.url']) + ':3000'
+    base_url = "http://" + (Page.respond_to?(:current_site) ? Page.current_site.base_domain : Radiant::Config['site.url'])
     # base_url = "#{base_url}/" unless base_url.match(/\/$/)
     
     defaults = {

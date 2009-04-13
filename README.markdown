@@ -89,15 +89,19 @@ and then give it some children and give those some audio files. That's it, reall
 
 If you want to turn an existing blog or other set of pages into a podcast, this should be all you need:
 
-	<r:find url="/blog">
-		<r:podcast from="children" />
-	</r:find>
+	<r:find url="/blog"><r:podcast from="children" /></r:find>
 	
 Or maybe:
 
-	<r:find url="/blog">
-		<r:podcast from="children" by="published_at" title="alert the authorities: my podcast is ready" link="site url/blog" subtitle="Don't panic" />
+	<r:find url="/blog"><r:podcast 
+		from="children" 
+		title="alert the authorities: my podcast is ready" 
+		link="site url/blog" 
+		subtitle="Don't panic" 
+	/>
 	</r:find>
+
+Note that you don't really want white space at the top of your feed, so it's best not to leave any between the tags.
 	
 Any audio files that you've attached to any child of your blog page will be drawn into the feed and ordered by the publication date of the blog entries.
 	
