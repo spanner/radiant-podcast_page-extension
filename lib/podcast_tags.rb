@@ -44,11 +44,11 @@ module PodcastTags
     defaults.each {|k,v| tag.attr[k] ||= v}
     
     if tag.double?
-      tag.attr['description'] ||= tag.expand
+      tag.attr['description'] = tag.expand
     elsif page.part(:description)
-      tag.attr['description'] ||= page.render_part(:description)
+      tag.attr['description'] = page.render_part(:description)
     end
-    tag.attr['description'] ||= "No description found."
+    tag.attr['description'] ||= "Nondescript."
     
     if i = page.assets.images.first
       tag.attr['image'] = base_url + i.thumbnail(:itunes)
@@ -66,10 +66,11 @@ module PodcastTags
               :title => child.title,
               :subtitle => a.caption,
               :description => description || a.caption, 
-              :link => base_url + a.asset.url, 
+              :link => base_url + child.url, 
+              :file => base_url + a.asset.url, 
               :file_size => a.asset_file_size, 
               :file_type => a.asset_content_type, 
-              :date => child.published_at
+              :date => child.published_at.utc
             })
           end
         end
@@ -84,6 +85,7 @@ module PodcastTags
             :file_size => a.asset_file_size, 
             :file_type => a.asset_content_type, 
             :link => base_url + a.asset.url, 
+            :file => base_url + a.asset.url, 
             :description => a.caption
           })
         end
@@ -131,7 +133,7 @@ module PodcastTags
           item.link = ep[:link]
           item.guid.content = ep[:link]
           item.guid.isPermaLink = true
-          item.enclosure.url = ep[:link]
+          item.enclosure.url = ep[:file]
           item.enclosure.type = ep[:file_type]
           item.enclosure.length = ep[:file_size]
 

@@ -1,14 +1,14 @@
 namespace :radiant do
   namespace :extensions do
-    namespace :podcast do
+    namespace :podcast_page do
       
       desc "Runs the migration of the Podcast extension"
       task :migrate => :environment do
         require 'radiant/extension_migrator'
         if ENV["VERSION"]
-          PodcastExtension.migrator.migrate(ENV["VERSION"].to_i)
+          PodcastPageExtension.migrator.migrate(ENV["VERSION"].to_i)
         else
-          PodcastExtension.migrator.migrate
+          PodcastPageExtension.migrator.migrate
         end
       end
       
@@ -16,8 +16,8 @@ namespace :radiant do
       task :update => :environment do
         is_svn_or_dir = proc {|path| path =~ /\.svn/ || File.directory?(path) }
         puts "Copying assets from PodcastExtension"
-        Dir[PodcastExtension.root + "/public/**/*"].reject(&is_svn_or_dir).each do |file|
-          path = file.sub(PodcastExtension.root, '')
+        Dir[PodcastPageExtension.root + "/public/**/*"].reject(&is_svn_or_dir).each do |file|
+          path = file.sub(PodcastPageExtension.root, '')
           directory = File.dirname(path)
           mkdir_p RAILS_ROOT + directory
           cp file, RAILS_ROOT + path

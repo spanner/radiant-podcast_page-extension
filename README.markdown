@@ -1,12 +1,12 @@
-# Podcast extension
+# Podcast Page extension
 
-This is a simple thing that adds a few radius tags and makes it very simple to serve podcast feeds.
+This is a simple thing that adds a few radius tags and makes it very simple to serve podcast feeds. We also have a very similar [rss_page](https://github.com/spanner/radiant-rss_page-extension) extension but I've kept this separate because it requires some faff to get a more up to date RSS library.
 
-It offers two ways to create a podcast: from the audio and video assets attached to a page, or from whatever audio and video it can find in a collection of pages (ie your blog, probably). The resulting feeds are itunes-compatible.
+The extension offers two ways to create a podcast: from the audio and video assets attached to a page, or from whatever audio and video it can find in a collection of pages (ie your blog, probably). The resulting feeds are itunes-compatible.
 
 The extension also adds a 'podcast' page type, which forces the right layout and labels your page nicely in the tree, but doesn't do much else. You can use the podcast tags in any page.
 
-If you install the [reader extension](https://github.com/spanner/reader/tree) then the podcasts can be subject to access control like any other page.
+If you install the [reader extension](https://github.com/spanner/radiant-reader-extension) then the podcasts can be subject to access control like any other page.
 
 ## Status
 
@@ -25,8 +25,8 @@ This works fine with multi_site. If it's installed, we derive link urls from `Pa
 
 Should be straightforward:
 
-	git submodule add git://github.com/spanner/radiant-podcast-extension.git vendor/extensions/podcast
-	rake radiant:extensions:podcast:migrate
+	git submodule add git://github.com/spanner/radiant-podcast_page-extension.git vendor/extensions/podcast_page
+	rake radiant:extensions:podcast_page:migrate
 
 The migration will add a 'podcast' layout and an 'itunes' thumbnail size, unless you already have them. There are no database changes.
 
