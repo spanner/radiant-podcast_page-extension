@@ -9,9 +9,12 @@ class PodcastPage < Page
     []
   end
   
-  def set_defaults
-    layout = Layout.find_by_name('Podcast') || Layout.create!({:name => 'Podcast', :content_type => 'application/rss+xml', :content => '<r:content />'})
-    update_attribute(:layout_id, podcast_layout.id) if podcast_layout && layout_id != podcast_layout.id
+  def layout
+    Layout.find(layout_id)
+  rescue ActiveRecord::RecordNotFound
+    rss_layout = Layout.find_by_name('RSS') || Layout.create!({:name => 'RSS', :content_type => 'application/rss+xml', :content => '<r:content />'})
+    update_attribute(:layout_id, rss_layout.id) if rss_layout
+    rss_layout
   end
 
 end
